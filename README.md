@@ -109,13 +109,16 @@ data:
 - Assuming the app and helm charts are built and distributed, and secret has been generated and applied
 - `helm install --namespace aab-dev bankers-choice aab/aab-bankers-choice`
 
+## Update an application
+- `helm repo updage`
+- `helm upgrade bankers-choice --namespace aab-dev aab/aab-bankers-choice`
+
 ## Add app to gloo
 
 - If virutal service hasn't been created (this should only have to be done once per environment)
     - `glooctl create virtualservice aab-dev --display-name aab-dev --domains prod.aab.*`
 - Find the upstream
     - `glooctl get upstreams`
-- Create the routes to the appropriate upstream
-    - Note: Two route are needed to avoid the path prefix problem (https://docs.solo.io/gloo/latest/guides/traffic_management/request_processing/prefix_rewrite/#avoiding-the--rewrite-problem)
-    - `glooctl add route --path-prefix /bankerschoice --dest-name aab-dev-bankers-choice-aab-bankers-choice-80 --prefix-rewrite / --name aab-dev`
-    - `glooctl add route --path-prefix /bankerschoice/ --dest-name aab-dev-bankers-choice-aab-bankers-choice-80 --prefix-rewrite / --name aab-dev`
+- Create the route to the appropriate upstream
+    - No prefix rewrite means the app has to know ahead of time what path base it can use (`app.UsePathBase("/bankerschoice");`)
+    - `glooctl add route --path-prefix /bankerschoice/ --dest-name aab-dev-bankers-choice-aab-bankers-choice-80 --name aab-dev`
