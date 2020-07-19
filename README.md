@@ -33,7 +33,7 @@ There are various repo's here that represent the existing infrastructure that th
     - A customer verification system. Will return in some time for a request.
     - REST interface
         - No webhook, but expects a url to hit
-- MailGrid
+- MailCat
     - A simple email service with a templating engine
     - REST interface
 
